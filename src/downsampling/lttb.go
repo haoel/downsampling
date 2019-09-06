@@ -12,12 +12,12 @@ func LTTB(data []Point, threshold int) []Point {
 		return data // Nothing to do
 	}
 
-	sampled := make([]Point, 0, threshold)
+	sampledData := make([]Point, 0, threshold)
 
 	// Bucket size. Leave room for start and end data points
 	bucketSize := float64(len(data)-2) / float64(threshold-2)
 
-	sampled = append(sampled, data[0]) // Always add the first point
+	sampledData = append(sampledData, data[0]) // Always add the first point
 
 	// We have 3 pointers represent for
 	// > bucketLow - the current bucket's beginning location
@@ -34,8 +34,8 @@ func LTTB(data []Point, threshold int) []Point {
 		bucketHigh := int(math.Floor(float64(i+2)*bucketSize)) + 1
 
 		// Calculate point average for next bucket (containing c)
-		avgPoint := calculateAverageDataPoint(data[bucketMiddle:bucketHigh+1])
-		
+		avgPoint := calculateAverageDataPoint(data[bucketMiddle : bucketHigh+1])
+
 		// Get the range for current bucket
 		currBucketStart := bucketLow
 		currBucketEnd := bucketMiddle
@@ -51,19 +51,19 @@ func LTTB(data []Point, threshold int) []Point {
 			area := calculateTriangleArea(pointA, avgPoint, data[currBucketStart])
 			if area > maxArea {
 				maxArea = area
-				maxAreaPoint = currBucketStart 
+				maxAreaPoint = currBucketStart
 			}
 		}
 
-		sampled = append(sampled, data[maxAreaPoint]) // Pick this point from the bucket
-		prevMaxAreaPoint = maxAreaPoint               // This MaxArea point is the next's prevMAxAreaPoint
+		sampledData = append(sampledData, data[maxAreaPoint]) // Pick this point from the bucket
+		prevMaxAreaPoint = maxAreaPoint                       // This MaxArea point is the next's prevMAxAreaPoint
 
 		//move to the next window
 		bucketLow = bucketMiddle
 		bucketMiddle = bucketHigh
 	}
 
-	sampled = append(sampled, data[len(data)-1]) // Always add last
+	sampledData = append(sampledData, data[len(data)-1]) // Always add last
 
-	return sampled
+	return sampledData
 }

@@ -134,7 +134,8 @@ func main() {
 	dataDir := dir + "/../data/"
 
 	rawdata := loadPointsFromCSV(dataDir + "source.csv")
-	samples := downsampling.LTTB(rawdata, 500)
+	samples_ltob := downsampling.LTOB(rawdata, 500)
+	samples_lttb := downsampling.LTTB(rawdata, 500)
 
 	// Make a line plotter and set its style.
 	rawLine, err := plotter.NewLine(covertToPlotXY(rawdata))
@@ -143,15 +144,25 @@ func main() {
 	//rawLine.LineStyle.Dashes = []vg.Length{vg.Points(5), vg.Points(5)}
 	rawLine.LineStyle.Color = color.RGBA{R: 255, A: 255}
 
-	sampleLine, err := plotter.NewLine(covertToPlotXY(samples))
+	sampleLine_ltob, err := plotter.NewLine(covertToPlotXY(samples_ltob))
 	checkError("new line error", err)
-	sampleLine.LineStyle.Width = vg.Points(1)
+	sampleLine_ltob.LineStyle.Width = vg.Points(1)
 	//sampleLine.LineStyle.Dashes = []vg.Length{vg.Points(5), vg.Points(5)}
-	sampleLine.LineStyle.Color = color.RGBA{B: 255, A: 255}
+	sampleLine_ltob.LineStyle.Color = color.RGBA{B: 255, A: 255}
+
+	sampleLine_lttb, err := plotter.NewLine(covertToPlotXY(samples_lttb))
+	checkError("new line error", err)
+	sampleLine_lttb.LineStyle.Width = vg.Points(1)
+	//sampleLine.LineStyle.Dashes = []vg.Length{vg.Points(5), vg.Points(5)}
+	sampleLine_lttb.LineStyle.Color = color.RGBA{G: 255, A: 255}
 
 	savePNG("Raw Data", "01.png", []string{"Raw Data"}, []*plotter.Line{rawLine})
-	savePNG("DownSampling Data", "02.png", []string{"DownSampling Data"}, []*plotter.Line{sampleLine})
-	savePNG("DownSampling Example", "03.png", []string{"Raw", "Sampled"}, []*plotter.Line{rawLine, sampleLine})
+	savePNG("DownSampling Data - LTOB", "02.png", []string{"DownSampling Data - LTOB"}, []*plotter.Line{sampleLine_ltob})
+	savePNG("DownSampling Data - LTTB", "03.png", []string{"DownSampling Data - LTTB"}, []*plotter.Line{sampleLine_lttb})
 
-	appendPNGs([]string{"01.png", "02.png", "03.png"}, dataDir+"downsampling.chart.png")
+	savePNG("DownSampling Example", "05.png",
+		[]string{"Raw", "Sampled - LTOB", "Sampled - LTTB"},
+		[]*plotter.Line{rawLine, sampleLine_ltob, sampleLine_lttb})
+
+	appendPNGs([]string{"01.png", "02.png", "03.png", "05.png"}, dataDir+"downsampling.chart.png")
 }
