@@ -19,19 +19,19 @@ func LTTB(data []Point, threshold int) []Point {
 
 	sampled = append(sampled, data[0]) // Always add the first point
 
-	// We have 3 pointers represent for 
+	// We have 3 pointers represent for
 	// > bucketLow - the current bucket's start location
-	// > bucketMiddle - the current bucket's end location, 
+	// > bucketMiddle - the current bucket's end location,
 	//                  also the start location of next bucket
 	// > bucketHight - the next bucket's end location.
 	bucketLow := 1
 	bucketMiddle := int(math.Floor(bucketSize)) + 1
 
-	var a int
+	var prevMaxAreaPoint int
 
 	for i := 0; i < threshold-2; i++ {
 
-		bucketHigh := int(math.Floor(float64(i+2) * bucketSize)) + 1
+		bucketHigh := int(math.Floor(float64(i+2)*bucketSize)) + 1
 
 		// Calculate point average for next bucket (containing c)
 		avgRangeStart := bucketMiddle
@@ -56,27 +56,27 @@ func LTTB(data []Point, threshold int) []Point {
 		currBucketEnd := bucketMiddle
 
 		// Point a
-		pointAX := data[a].X
-		pointAY := data[a].Y
+		pX := data[prevMaxAreaPoint].X
+		pY := data[prevMaxAreaPoint].Y
 
 		maxArea := -1.0
 
-		var nextA int
+		var maxAreaPoint int
 		for ; currBucketStart < currBucketEnd; currBucketStart++ {
 			// Calculate triangle area over three buckets
-			area :=  (pointAX - avgX) * (data[currBucketStart].Y - pointAY) - 
-				 ( pointAX - data[currBucketStart].X) * (avgY - pointAY) 
+			area := (pX-avgX)*(data[currBucketStart].Y-pY) -
+				(pX-data[currBucketStart].X)*(avgY-pY)
 			// We only care about the relative area here.
 			// Calling math.Abs() is slower than squaring
 			area *= area
 			if area > maxArea {
 				maxArea = area
-				nextA = currBucketStart // Next a is this b
+				maxAreaPoint = currBucketStart // Next a is this b
 			}
 		}
 
-		sampled = append(sampled, data[nextA]) // Pick this point from the bucket
-		a = nextA                              // This a is the next a (chosen b)
+		sampled = append(sampled, data[maxAreaPoint]) // Pick this point from the bucket
+		prevMaxAreaPoint = maxAreaPoint               // This MaxArea point is the next's prevMAxAreaPoint
 
 		bucketLow = bucketMiddle
 		bucketMiddle = bucketHigh
