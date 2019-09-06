@@ -20,10 +20,10 @@ func LTTB(data []Point, threshold int) []Point {
 	sampled = append(sampled, data[0]) // Always add the first point
 
 	// We have 3 pointers represent for
-	// > bucketLow - the current bucket's start location
-	// > bucketMiddle - the current bucket's end location,
-	//                  also the start location of next bucket
-	// > bucketHight - the next bucket's end location.
+	// > bucketLow - the current bucket's beginning location
+	// > bucketMiddle - the current bucket's ending location,
+	//                  also the beginning location of next bucket
+	// > bucketHight - the next bucket's ending location.
 	bucketLow := 1
 	bucketMiddle := int(math.Floor(bucketSize)) + 1
 
@@ -34,50 +34,31 @@ func LTTB(data []Point, threshold int) []Point {
 		bucketHigh := int(math.Floor(float64(i+2)*bucketSize)) + 1
 
 		// Calculate point average for next bucket (containing c)
-		avgRangeStart := bucketMiddle
-		avgRangeEnd := bucketHigh
-
-		if avgRangeEnd >= len(data) {
-			avgRangeEnd = len(data)
-		}
-
-		avgRangeLength := float64(avgRangeEnd - avgRangeStart)
-
-		var avgX, avgY float64
-		for ; avgRangeStart < avgRangeEnd; avgRangeStart++ {
-			avgX += data[avgRangeStart].X
-			avgY += data[avgRangeStart].Y
-		}
-		avgX /= avgRangeLength
-		avgY /= avgRangeLength
-
+		avgPoint := calculateAverageDataPoint(data[bucketMiddle:bucketHigh+1])
+		
 		// Get the range for current bucket
 		currBucketStart := bucketLow
 		currBucketEnd := bucketMiddle
 
 		// Point a
-		pX := data[prevMaxAreaPoint].X
-		pY := data[prevMaxAreaPoint].Y
+		pointA := data[prevMaxAreaPoint]
 
 		maxArea := -1.0
 
 		var maxAreaPoint int
 		for ; currBucketStart < currBucketEnd; currBucketStart++ {
-			// Calculate triangle area over three buckets
-			area := (pX-avgX)*(data[currBucketStart].Y-pY) -
-				(pX-data[currBucketStart].X)*(avgY-pY)
-			// We only care about the relative area here.
-			// Calling math.Abs() is slower than squaring
-			area *= area
+
+			area := calculateTriangleArea(pointA, avgPoint, data[currBucketStart])
 			if area > maxArea {
 				maxArea = area
-				maxAreaPoint = currBucketStart // Next a is this b
+				maxAreaPoint = currBucketStart 
 			}
 		}
 
 		sampled = append(sampled, data[maxAreaPoint]) // Pick this point from the bucket
 		prevMaxAreaPoint = maxAreaPoint               // This MaxArea point is the next's prevMAxAreaPoint
 
+		//move to the next window
 		bucketLow = bucketMiddle
 		bucketMiddle = bucketHigh
 	}
