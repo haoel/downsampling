@@ -77,7 +77,7 @@ func savePNG(title string, file string, name []string, line []*plotter.Line) {
 	p.X.Label.Text = "X"
 	p.Y.Label.Text = "Y"
 
-	for i, _ := range line {
+	for i := range line {
 		p.Add(line[i])
 		p.Legend.Add(name[i], line[i])
 	}
@@ -110,7 +110,7 @@ func appendPNGs(fileNames []string, targetFile string) {
 	rgba := image.NewRGBA(rect)
 
 	height = 0
-	for i, _ := range images {
+	for i := range images {
 		rect := images[i].Bounds().Add(image.Point{0, height})
 
 		draw.Draw(rgba, rect, images[i], image.Point{0, 0}, draw.Src)
@@ -134,8 +134,8 @@ func main() {
 	dataDir := dir + "/../data/"
 
 	rawdata := loadPointsFromCSV(dataDir + "source.csv")
-	samples_ltob := downsampling.LTOB(rawdata, 500)
-	samples_lttb := downsampling.LTTB(rawdata, 500)
+	smaplesLTOB := downsampling.LTOB(rawdata, 500)
+	smaplesLTTB := downsampling.LTTB(rawdata, 500)
 
 	// Make a line plotter and set its style.
 	rawLine, err := plotter.NewLine(covertToPlotXY(rawdata))
@@ -144,25 +144,25 @@ func main() {
 	//rawLine.LineStyle.Dashes = []vg.Length{vg.Points(5), vg.Points(5)}
 	rawLine.LineStyle.Color = color.RGBA{R: 255, A: 255}
 
-	sampleLine_ltob, err := plotter.NewLine(covertToPlotXY(samples_ltob))
+	sampleLineLTOB, err := plotter.NewLine(covertToPlotXY(smaplesLTOB))
 	checkError("new line error", err)
-	sampleLine_ltob.LineStyle.Width = vg.Points(1)
+	sampleLineLTOB.LineStyle.Width = vg.Points(1)
 	//sampleLine.LineStyle.Dashes = []vg.Length{vg.Points(5), vg.Points(5)}
-	sampleLine_ltob.LineStyle.Color = color.RGBA{B: 255, A: 255}
+	sampleLineLTOB.LineStyle.Color = color.RGBA{B: 255, A: 255}
 
-	sampleLine_lttb, err := plotter.NewLine(covertToPlotXY(samples_lttb))
+	sampleLineLTTB, err := plotter.NewLine(covertToPlotXY(smaplesLTTB))
 	checkError("new line error", err)
-	sampleLine_lttb.LineStyle.Width = vg.Points(1)
+	sampleLineLTTB.LineStyle.Width = vg.Points(1)
 	//sampleLine.LineStyle.Dashes = []vg.Length{vg.Points(5), vg.Points(5)}
-	sampleLine_lttb.LineStyle.Color = color.RGBA{G: 255, A: 255}
+	sampleLineLTTB.LineStyle.Color = color.RGBA{G: 255, A: 255}
 
 	savePNG("Raw Data", "01.png", []string{"Raw Data"}, []*plotter.Line{rawLine})
-	savePNG("DownSampling Data - LTOB", "02.png", []string{"DownSampling Data - LTOB"}, []*plotter.Line{sampleLine_ltob})
-	savePNG("DownSampling Data - LTTB", "03.png", []string{"DownSampling Data - LTTB"}, []*plotter.Line{sampleLine_lttb})
+	savePNG("DownSampling Data - LTOB", "02.png", []string{"DownSampling Data - LTOB"}, []*plotter.Line{sampleLineLTOB})
+	savePNG("DownSampling Data - LTTB", "03.png", []string{"DownSampling Data - LTTB"}, []*plotter.Line{sampleLineLTTB})
 
 	savePNG("DownSampling Example", "05.png",
 		[]string{"Raw", "Sampled - LTOB", "Sampled - LTTB"},
-		[]*plotter.Line{rawLine, sampleLine_ltob, sampleLine_lttb})
+		[]*plotter.Line{rawLine, sampleLineLTOB, sampleLineLTTB})
 
 	appendPNGs([]string{"01.png", "02.png", "03.png", "05.png"}, dataDir+"downsampling.chart.png")
 }
