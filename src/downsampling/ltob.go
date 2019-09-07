@@ -4,8 +4,9 @@ import (
 	"math"
 )
 
-// LTOB down-samples the data to contain only threshold number of points that
-// have the same visual shape as the original data
+// Largest triangle one bucket(LTOB) data downsampling algorithm implementation
+//  - Require: data . The original data
+//  - Require: threshold . Number of data points to be returned
 func LTOB(data []Point, threshold int) []Point {
 
 	if threshold >= len(data) || threshold == 0 {
