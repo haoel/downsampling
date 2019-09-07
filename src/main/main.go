@@ -1,13 +1,13 @@
 package main
 
 import (
+	"bufio"
+	"encoding/csv"
 	_ "fmt"
+	"image/color"
 	"io"
 	"os"
-	"bufio"
 	"strconv"
-	"encoding/csv"
-	"image/color"
 
 	"common"
 	"diagram"
@@ -45,13 +45,16 @@ func main() {
 	smaplesLTOB := downsampling.LTOB(rawdata, 500)
 	smaplesLTTB := downsampling.LTTB(rawdata, 500)
 
-	rawLine, err := diagram.MakeLinePlotter(diagram.CovertToPlotXY(rawdata), color.RGBA{R: 0, G: 0, B: 0, A: 255})
+	rawLine, err := diagram.MakeLinePlotter(
+		diagram.CovertToPlotXY(rawdata), color.RGBA{R: 0, G: 0, B: 0, A: 255})
 	common.CheckError("Cannot make a line plotter", err)
 
-	sampleLineLTOB, err := diagram.MakeLinePlotter(diagram.CovertToPlotXY(smaplesLTOB), color.RGBA{R: 255, G: 0, B: 0, A: 255})
+	sampleLineLTOB, err := diagram.MakeLinePlotter(
+		diagram.CovertToPlotXY(smaplesLTOB), color.RGBA{R: 255, G: 0, B: 0, A: 255})
 	common.CheckError("Cannot make a line plotter", err)
 
-	sampleLineLTTB, err := diagram.MakeLinePlotter(diagram.CovertToPlotXY(smaplesLTTB), color.RGBA{R: 0, G: 0, B: 255, A: 255})
+	sampleLineLTTB, err := diagram.MakeLinePlotter(
+		diagram.CovertToPlotXY(smaplesLTTB), color.RGBA{R: 0, G: 0, B: 255, A: 255})
 	common.CheckError("Cannot make a line plotter", err)
 
 	if err := diagram.SavePNG("Raw Data", "01.png",
@@ -72,7 +75,8 @@ func main() {
 		common.LogFatal("Cannot save the png file", err)
 	}
 
-	if err := diagram.ConcatPNGs([]string{"01.png", "02.png", "03.png", "05.png"}, dataDir+"downsampling.chart.png"); err != nil {
+	if err := diagram.ConcatPNGs([]string{"01.png", "02.png", "03.png", "05.png"},
+		dataDir+"downsampling.chart.png"); err != nil {
 		common.LogFatal("Cannot concatenate the png files", err)
 	}
 }
