@@ -61,4 +61,13 @@ The diagram picture as below
 
 ![](./data/downsampling.chart.png?raw=true)
 
+
+## Further Reading
+
+* [The Billion Data Point Challenge](https://eng.uber.com/billion-data-point-challenge/) by Uber Engineering team
+* [Visualize Big Data on Mobile](http://dduraz.com/2019/04/26/data-visualization-mobile/) by dduraz
+* [Sampling large datasets in d3fc](http://blog.scottlogic.com/2015/11/16/sampling-large-data-in-d3fc.html) by William Ferguson
+* [Downsampling algorithms](http://www.adrian.idv.hk/2018-01-24-downsample/) by Adrian S. Tam
+
+
 Enjoy it!
