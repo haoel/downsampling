@@ -67,3 +67,38 @@ func LTTB(data []Point, threshold int) []Point {
 
 	return sampledData
 }
+
+func LTTB2(data []Point, threshold int) []Point {
+	buckets := splitDataBucket(data, threshold)
+	samples := LTTBForBuckets(buckets)
+	return samples
+}
+
+func LTTBForBuckets(buckets [][]Point) []Point {
+	bucketCount := len(buckets)
+	sampledData := make([]Point, 0)
+
+	sampledData = append(sampledData, buckets[0][0])
+
+	lastSelectedDataPoint := buckets[0][0]
+	for i := 1; i < bucketCount-1; i++ {
+		bucket := buckets[i]
+		averagePoint := calculateAveragePoint(buckets[i+1])
+
+		maxArea := -1.0
+		maxAreaIndex := -1
+		for j := 0; j < len(bucket); j++ {
+			point := bucket[j]
+			area := calculateTriangleArea(lastSelectedDataPoint, point, averagePoint)
+
+			if area > maxArea {
+				maxArea = area
+				maxAreaIndex = j
+			}
+		}
+		lastSelectedDataPoint := bucket[maxAreaIndex]
+		sampledData = append(sampledData, lastSelectedDataPoint)
+	}
+	sampledData = append(sampledData, buckets[len(buckets)-1][0])
+	return sampledData
+}
