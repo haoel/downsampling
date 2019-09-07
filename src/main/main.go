@@ -3,11 +3,12 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
+	"fmt"
 	"image/color"
 	"io"
+	"log"
 	"os"
 	"strconv"
-	"log"
 
 	"common"
 	"diagram"
@@ -34,6 +35,22 @@ func loadPointsFromCSV(file string) []downsampling.Point {
 	return data
 }
 
+func savePointsToCSV(file string, points []downsampling.Point) {
+	fp, err := os.Create(file)
+	common.CheckError("Cannot create file", err)
+	defer fp.Close()
+
+	writer := csv.NewWriter(fp)
+	defer writer.Flush()
+
+	for _, point := range points {
+		x := fmt.Sprintf("%f", point.X)
+		y := fmt.Sprintf("%f", point.Y)
+		err := writer.Write([]string{x, y})
+		common.CheckError("Cannot write to file", err)
+	}
+}
+
 func main() {
 
 	dir := common.GetBinaryDirectory()
@@ -43,13 +60,16 @@ func main() {
 
 	log.Println("Reading the testing data...")
 	rawdata := loadPointsFromCSV(dataDir + "source.csv")
-	
+
 	log.Printf("Downsampling the data from %d to %d...\n", len(rawdata), sampledCount)
 	samplesLTOB := downsampling.LTOB(rawdata, sampledCount)
+	savePointsToCSV(dataDir+"downsampling.ltob.csv", samplesLTOB)
 	log.Println("Downsampling data - LTOB algorithm done!")
 	samplesLTTB := downsampling.LTTB(rawdata, sampledCount)
+	savePointsToCSV(dataDir+"downsampling.lttb.csv", samplesLTTB)
 	log.Println("Downsampling data - LTTB algorithm done!")
 	samplesLTD := downsampling.LTD(rawdata, sampledCount)
+	savePointsToCSV(dataDir+"downsampling.ltd.csv", samplesLTD)
 	log.Println("Downsampling data - LTD algorithm done!")
 
 	file := dataDir + "downsampling.chart.png"
