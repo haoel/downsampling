@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"strconv"
+	"log"
 
 	"common"
 	"diagram"
@@ -39,11 +40,20 @@ func main() {
 	dataDir := dir + "/../data/"
 
 	const sampledCount = 500
-	rawdata := loadPointsFromCSV(dataDir + "source.csv")
-	samplesLTOB := downsampling.LTOB(rawdata, sampledCount)
-	samplesLTTB := downsampling.LTTB(rawdata, sampledCount)
-	samplesLTD := downsampling.LTD(rawdata, sampledCount)
 
+	log.Println("Reading the testing data...")
+	rawdata := loadPointsFromCSV(dataDir + "source.csv")
+	
+	log.Printf("Downsampling the data from %d to %d...\n", len(rawdata), sampledCount)
+	samplesLTOB := downsampling.LTOB(rawdata, sampledCount)
+	log.Println("Downsampling data - LTOB algorithm done!")
+	samplesLTTB := downsampling.LTTB(rawdata, sampledCount)
+	log.Println("Downsampling data - LTTB algorithm done!")
+	samplesLTD := downsampling.LTD(rawdata, sampledCount)
+	log.Println("Downsampling data - LTD algorithm done!")
+
+	file := dataDir + "downsampling.chart.png"
+	log.Printf("Creating the diagram file...")
 	var dcs = []diagram.Config{
 		{Title: "Raw Data", Name: "Raw Data", Data: rawdata, Color: color.RGBA{A: 255}},
 		{Title: "LTOB Sampled Data", Name: "Sampled - LTOB", Data: samplesLTOB, Color: color.RGBA{R: 255, A: 255}},
@@ -51,7 +61,7 @@ func main() {
 		{Title: "LTD Sampled Data", Name: "Sampled - LTD", Data: samplesLTD, Color: color.RGBA{G: 255, A: 255}},
 	}
 
-	err := diagram.CreateDiagram(dcs, dataDir+"downsampling.chart.png")
+	err := diagram.CreateDiagram(dcs, file)
 	common.CheckError("create diagram error", err)
-
+	log.Printf("Successfully created the diagram - %s\n", file)
 }
