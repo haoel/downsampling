@@ -1,6 +1,7 @@
 package diagram
 
 import (
+	"fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -24,13 +25,13 @@ func CovertToPlotXY(data []downsampling.Point) plotter.XYs {
 	return pts
 }
 
-func MakeLinePlotter(d plotter.XYs, c color.RGBA) (*plotter.Line, error) {
+func MakeLinePlotter(d plotter.XYs, c color.RGBA, width int) (*plotter.Line, error) {
 	// Make a line plotter and set its style.
 	line, err := plotter.NewLine(d)
 	if err != nil {
 		return nil, err
 	}
-	line.LineStyle.Width = vg.Points(1)
+	line.LineStyle.Width = vg.Points(float64(width))
 	//rawLine.LineStyle.Dashes = []vg.Length{vg.Points(5), vg.Points(5)}
 	line.LineStyle.Color = c
 
@@ -96,6 +97,40 @@ func ConcatPNGs(fileNames []string, targetFile string) error {
 
 	for _, f := range fileNames {
 		os.Remove(f)
+	}
+	return nil
+}
+
+func CreateDiagram(confs []Config, outputFile string) error {
+
+	plotterLines := make([]*plotter.Line, len(confs))
+
+	var files []string
+	var names []string
+	var err error
+	for i, c := range confs {
+		plotterLines[i], err = MakeLinePlotter(CovertToPlotXY(c.Data), c.Color, 1)
+		if err != nil {
+			return err
+		}
+
+		filename := fmt.Sprintf("%03d.png", i)
+		if err := SavePNG(c.Title, filename, []string{c.Title}, []*plotter.Line{plotterLines[i]}); err != nil {
+			return err
+		}
+		files = append(files, filename)
+		names = append(names, c.Name)
+	}
+
+	// All in One
+	if err := SavePNG("All in One", "all.png", names, plotterLines); err != nil {
+		return err
+	}
+
+	// concat all picture together
+	files = append(files, "all.png")
+	if err := ConcatPNGs(files, outputFile); err != nil {
+		return err
 	}
 	return nil
 }

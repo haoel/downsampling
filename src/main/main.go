@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/csv"
-	_ "fmt"
 	"image/color"
 	"io"
 	"os"
@@ -12,8 +11,6 @@ import (
 	"common"
 	"diagram"
 	"downsampling"
-
-	"gonum.org/v1/plot/plotter"
 )
 
 func loadPointsFromCSV(file string) []downsampling.Point {
@@ -41,42 +38,20 @@ func main() {
 	dir := common.GetBinaryDirectory()
 	dataDir := dir + "/../data/"
 
+	const sampledCount = 500
 	rawdata := loadPointsFromCSV(dataDir + "source.csv")
-	smaplesLTOB := downsampling.LTOB(rawdata, 500)
-	smaplesLTTB := downsampling.LTTB(rawdata, 500)
+	samplesLTOB := downsampling.LTOB(rawdata, sampledCount)
+	samplesLTTB := downsampling.LTTB(rawdata, sampledCount)
+	samplesLTD := downsampling.LTD(rawdata, sampledCount)
 
-	rawLine, err := diagram.MakeLinePlotter(
-		diagram.CovertToPlotXY(rawdata), color.RGBA{R: 0, G: 0, B: 0, A: 255})
-	common.CheckError("Cannot make a line plotter", err)
-
-	sampleLineLTOB, err := diagram.MakeLinePlotter(
-		diagram.CovertToPlotXY(smaplesLTOB), color.RGBA{R: 255, G: 0, B: 0, A: 255})
-	common.CheckError("Cannot make a line plotter", err)
-
-	sampleLineLTTB, err := diagram.MakeLinePlotter(
-		diagram.CovertToPlotXY(smaplesLTTB), color.RGBA{R: 0, G: 0, B: 255, A: 255})
-	common.CheckError("Cannot make a line plotter", err)
-
-	if err := diagram.SavePNG("Raw Data", "01.png",
-		[]string{"Raw Data"}, []*plotter.Line{rawLine}); err != nil {
-		common.LogFatal("Cannot save the png file", err)
-	}
-	if err := diagram.SavePNG("DownSampling Data - LTOB", "02.png",
-		[]string{"DownSampling Data - LTOB"}, []*plotter.Line{sampleLineLTOB}); err != nil {
-		common.LogFatal("Cannot save the png file", err)
-	}
-	if err := diagram.SavePNG("DownSampling Data - LTTB", "03.png",
-		[]string{"DownSampling Data - LTTB"}, []*plotter.Line{sampleLineLTTB}); err != nil {
-		common.LogFatal("Cannot save the png file", err)
-	}
-	if err := diagram.SavePNG("DownSampling Example", "05.png",
-		[]string{"Raw", "Sampled - LTOB", "Sampled - LTTB"},
-		[]*plotter.Line{rawLine, sampleLineLTOB, sampleLineLTTB}); err != nil {
-		common.LogFatal("Cannot save the png file", err)
+	var dcs = []diagram.Config{
+		{Title: "Raw Data", Name: "Raw Data", Data: rawdata, Color: color.RGBA{A: 255}},
+		{Title: "LTOB Sampled Data", Name: "Sampled - LTOB", Data: samplesLTOB, Color: color.RGBA{R: 255, A: 255}},
+		{Title: "LTTB Sampled Data", Name: "Sampled - LTTD", Data: samplesLTTB, Color: color.RGBA{B: 255, A: 255}},
+		{Title: "LTD Sampled Data", Name: "Sampled - LTD", Data: samplesLTD, Color: color.RGBA{G: 255, A: 255}},
 	}
 
-	if err := diagram.ConcatPNGs([]string{"01.png", "02.png", "03.png", "05.png"},
-		dataDir+"downsampling.chart.png"); err != nil {
-		common.LogFatal("Cannot concatenate the png files", err)
-	}
+	err := diagram.CreateDiagram(dcs, dataDir+"downsampling.chart.png")
+	common.CheckError("create diagram error", err)
+
 }
