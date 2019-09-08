@@ -4,18 +4,18 @@ The Golang implemtation for downsampling time series data algorthim
 
 ## Background
 
-While monitoring the online system, there are so many metrics's time series data could be store into the Elasticsearch for analysis. When the time passed, the histrical data is not very effective, and it could impact the system performance and the cost.
+While monitoring the online system, there could be so many metrics' time series data will be stored into the Elasticsearch or NoSQL databaser for analysis. When the time passed, storing every piece of the histrical data is not very effective way, and ithose huge data could impact the analysis performance and the cost of storage.
 
-However, remove the histrical data some time is not a option, but we can compressing them. 
+One of solution just simply delete the aged histrical data(e.g. only keep the latest 6 months data), but there is a solution we can compressing those data to small size with good resolution. 
 
-Here is an demo shows how to downsamping the time series data from 7500 points to 500 points.
+Here is a demo shows how to downsamping the time series data from 7500 points to 500 points.
 
 ## Acknowledgement
 
 - All of the algorthims are based on Sveinn Steinarsson's 2013 paper [Downsampling Time Series for Visual Representation]( 
 https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf)
 
-- The implmentation is base on [Ján Jakub Naništa's implementation by Typescript](https://github.com/janjakubnanista/downsample)
+- This implmentation refers to Ján Jakub Naništa's [implementation by Typescript](https://github.com/janjakubnanista/downsample)
 
 - The test data I borrow from one of python implmentation which is [here](https://github.com/devoxi/lttb-py/)
 
