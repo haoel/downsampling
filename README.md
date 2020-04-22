@@ -6,7 +6,7 @@ The Golang implemtation for downsampling time series data algorthim
   - [Background](#background)
   - [Acknowledgement](#acknowledgement)
   - [Usage](#usage)
-  - [One More Thing](#one-more-thing)
+  - [Peformance](#peformance)
     - [Profiling](#profiling)
     - [Benchmark](#benchmark)
   - [Further Reading](#further-reading)
@@ -70,7 +70,7 @@ The diagram picture as below
 
 ![](./data/downsampling.chart.png?raw=true)
 
-## One More Thing
+## Peformance
 
 You can use the following makefile target to analyze the performance of these algorithms.
 
