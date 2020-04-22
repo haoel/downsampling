@@ -29,7 +29,7 @@ https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) mentioned 3 types of 
 - Largest triangle one bucket (LTOB)
 - Largest triangle dynamic (LTD)
 
-You can file all of the implmentation under `src/downsampling` directory.
+You can find all of these implmentation under `src/downsampling` directory.
 
 
 Following the below instuction to compile and run this repo.

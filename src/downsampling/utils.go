@@ -62,3 +62,23 @@ func calculateAveragePoint(points []Point) Point {
 	return p
 
 }
+
+func peakAndTroughPointIndex(points []Point) (int, int) {
+	max := -0.1
+	min := math.MaxFloat64
+	minIdx := 0
+	maxIdx := 0
+	for i := 0; i < len(points); i++ {
+		if points[i].Y > max {
+			max = points[i].Y
+			maxIdx = i
+		}
+		if points[i].Y < min {
+			min = points[i].Y
+			minIdx = i
+		}
+	}
+	return maxIdx, minIdx
+}
+
+
