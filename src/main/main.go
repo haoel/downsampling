@@ -1,55 +1,18 @@
 package main
 
 import (
-	"bufio"
-	"encoding/csv"
-	"fmt"
+	"flag"
 	"image/color"
-	"io"
 	"log"
 	"os"
-	"strconv"
+	"runtime/pprof"
 
 	"common"
 	"diagram"
 	"downsampling"
 )
 
-func loadPointsFromCSV(file string) []downsampling.Point {
-	csvFile, err := os.Open(file)
-	common.CheckError("Cannot Open the file.", err)
-	reader := csv.NewReader(bufio.NewReader(csvFile))
-
-	var data []downsampling.Point
-	for {
-		line, error := reader.Read()
-		if error == io.EOF {
-			break
-		}
-		common.CheckError("Read file error", err)
-		var d downsampling.Point
-		d.X, _ = strconv.ParseFloat(line[0], 64)
-		d.Y, _ = strconv.ParseFloat(line[1], 64)
-		data = append(data, d)
-	}
-	return data
-}
-
-func savePointsToCSV(file string, points []downsampling.Point) {
-	fp, err := os.Create(file)
-	common.CheckError("Cannot create file", err)
-	defer fp.Close()
-
-	writer := csv.NewWriter(fp)
-	defer writer.Flush()
-
-	for _, point := range points {
-		x := fmt.Sprintf("%f", point.X)
-		y := fmt.Sprintf("%f", point.Y)
-		err := writer.Write([]string{x, y})
-		common.CheckError("Cannot write to file", err)
-	}
-}
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
 func main() {
 
@@ -59,17 +22,34 @@ func main() {
 	const sampledCount = 500
 
 	log.Println("Reading the testing data...")
-	rawdata := loadPointsFromCSV(dataDir + "source.csv")
+	rawdata := common.LoadPointsFromCSV(dataDir + "source.csv")
 
+	flag.Parse()
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		pprof.StartCPUProfile(f)
+		var x []downsampling.Point
+		for i := 0; i < 200; i++ {
+			x = downsampling.LTOB(rawdata, sampledCount)
+			x = downsampling.LTTB(rawdata, sampledCount)
+			x = downsampling.LTD(rawdata, sampledCount)
+		}
+		pprof.StopCPUProfile()
+		println("%v\n", x)
+	}
 	log.Printf("Downsampling the data from %d to %d...\n", len(rawdata), sampledCount)
 	samplesLTOB := downsampling.LTOB(rawdata, sampledCount)
-	savePointsToCSV(dataDir+"downsampling.ltob.csv", samplesLTOB)
+	common.SavePointsToCSV(dataDir+"downsampling.ltob.csv", samplesLTOB)
 	log.Println("Downsampling data - LTOB algorithm done!")
 	samplesLTTB := downsampling.LTTB(rawdata, sampledCount)
-	savePointsToCSV(dataDir+"downsampling.lttb.csv", samplesLTTB)
+	common.SavePointsToCSV(dataDir+"downsampling.lttb.csv", samplesLTTB)
 	log.Println("Downsampling data - LTTB algorithm done!")
 	samplesLTD := downsampling.LTD(rawdata, sampledCount)
-	savePointsToCSV(dataDir+"downsampling.ltd.csv", samplesLTD)
+	common.SavePointsToCSV(dataDir+"downsampling.ltd.csv", samplesLTD)
 	log.Println("Downsampling data - LTD algorithm done!")
 
 	file := dataDir + "downsampling.chart.png"

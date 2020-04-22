@@ -32,22 +32,25 @@ func calculateSSEForBucket(points []Point) float64 {
 }
 
 func calculateSSEForBuckets(buckets [][]Point) []float64 {
-	sse := make([]float64, 1)
+	sse := make([]float64, len(buckets)-2)
 
 	// We skip the first and last buckets since they only contain one data point
 	for i := 1; i < len(buckets)-1; i++ {
 		prevBucket := buckets[i-1]
 		currBucket := buckets[i]
 		nextBucket := buckets[i+1]
-		if len(nextBucket) <= 0 {
-			println("--->", i)
+		// var bucketWithAdjacentPoints []Point
+		// bucketWithAdjacentPoints = append(bucketWithAdjacentPoints, prevBucket[len(prevBucket)-1])
+		// bucketWithAdjacentPoints = append(bucketWithAdjacentPoints, currBucket...)
+		// bucketWithAdjacentPoints = append(bucketWithAdjacentPoints, nextBucket[0])
+		bucketWithAdjacentPoints := make([]Point, len(currBucket)+2)
+		bucketWithAdjacentPoints[0] = prevBucket[len(prevBucket)-1]
+		bucketWithAdjacentPoints[len(bucketWithAdjacentPoints)-1] = nextBucket[0]
+		for i:=1; i < len(currBucket); i++ {
+			bucketWithAdjacentPoints[i] = currBucket[i-1]
 		}
-		var bucketWithAdjacentPoints []Point
-		bucketWithAdjacentPoints = append(bucketWithAdjacentPoints, prevBucket[len(prevBucket)-1])
-		bucketWithAdjacentPoints = append(bucketWithAdjacentPoints, currBucket...)
-		bucketWithAdjacentPoints = append(bucketWithAdjacentPoints, nextBucket[0])
 
-		sse = append(sse, calculateSSEForBucket(bucketWithAdjacentPoints))
+		sse[i-1] = calculateSSEForBucket(bucketWithAdjacentPoints)
 	}
 
 	sse = append(sse, 0)

@@ -2,6 +2,15 @@
 
 The Golang implemtation for downsampling time series data algorthim 
 
+- [Downsampling Algorthim](#downsampling-algorthim)
+  - [Background](#background)
+  - [Acknowledgement](#acknowledgement)
+  - [Usage](#usage)
+  - [One More Thing](#one-more-thing)
+    - [Profiling](#profiling)
+    - [Benchmark](#benchmark)
+  - [Further Reading](#further-reading)
+
 ## Background
 
 While monitoring the online system, there could be so many metrics' time series data will be stored into the Elasticsearch or NoSQL databaser for analysis. When the time passed, storing every piece of the histrical data is not very effective way, and ithose huge data could impact the analysis performance and the cost of storage.
@@ -61,6 +70,21 @@ The diagram picture as below
 
 ![](./data/downsampling.chart.png?raw=true)
 
+## One More Thing
+
+You can use the following makefile target to analyze the performance of these algorithms.
+
+### Profiling
+
+```
+make prof
+```
+
+### Benchmark
+
+```
+make bench
+```
 
 ## Further Reading
 

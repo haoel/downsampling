@@ -41,6 +41,15 @@ ${GLIDE}:
 		rm -rf ${GOBUILD}pkg ${GOBUILD}src; \
 	fi
 
+run : ${TARGET}
+	${TARGET}
+
+prof: ${TARGET}
+	${TARGET} -cpuprofile=downsampling.prof
+	go tool pprof ${TARGET} downsampling.prof
+
+bench:
+	go test -bench=. ./src/downsampling/
 
 vget: ${GLIDE}
 	if [ ! -f ${GLIDE_CONF} ]; then ${GLIDE} init; fi
