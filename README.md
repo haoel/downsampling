@@ -1,21 +1,22 @@
-# Downsampling Algorthim
+# Downsampling Algorithm
 
-The Golang implemtation for downsampling time series data algorthim 
+The Golang implementation for downsampling time series data algorithm 
 
-- [Downsampling Algorthim](#downsampling-algorthim)
+- [Downsampling Algorithm](#downsampling-algorithm)
   - [Background](#background)
   - [Acknowledgement](#acknowledgement)
   - [Usage](#usage)
-  - [Peformance](#peformance)
+  - [Performance](#performance)
     - [Profiling](#profiling)
     - [Benchmark](#benchmark)
   - [Further Reading](#further-reading)
+  - [License](#license)
 
 ## Background
 
-While monitoring the online system, there could be so many metrics' time series data will be stored into the Elasticsearch or NoSQL databaser for analysis. When the time passed, storing every piece of the histrical data is not very effective way, and those huge data could impact the analysis performance and the cost of storage.
+While monitoring the online system, there could be so many metrics' time series data will be stored into the Elasticsearch or NoSQL database for analysis. When the time passed, storing every piece of the historical data is not very effective way, and those huge data could impact the analysis performance and the cost of storage.
 
-One of solution just simply delete the aged histrical data(e.g. only keep the latest 6 months data), but there is a solution we can compressing those data to small size with good resolution. 
+One of solution just simply delete the aged historical data(e.g. only keep the latest 6 months data), but there is a solution we can compressing those data to small size with good resolution. 
 
 Here is a demo shows how to downsamping the time series data from 7500 points to 500 points (Actually, you can downsample it to 200 or 300 points).
 
@@ -38,10 +39,10 @@ https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf) mentioned 3 types of 
 - Largest triangle one bucket (LTOB)
 - Largest triangle dynamic (LTD)
 
-You can find all of these implmentation under `src/downsampling` directory.
+You can find all of these implementation under `src/downsampling` directory.
 
 
-Following the below instuction to compile and run this repo.
+Following the below instruction to compile and run this repo.
 
 ```
 make vget 
@@ -70,7 +71,7 @@ The diagram picture as below
 
 ![](./data/downsampling.chart.png?raw=true)
 
-## Peformance
+## Performance
 
 You can use the following makefile target to analyze the performance of these algorithms.
 
@@ -95,3 +96,7 @@ make bench
 
 
 Enjoy it!
+
+## License
+
+[MIT License](./LICENSE)
