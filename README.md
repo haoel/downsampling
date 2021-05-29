@@ -13,20 +13,20 @@ The Golang implemtation for downsampling time series data algorthim
 
 ## Background
 
-While monitoring the online system, there could be so many metrics' time series data will be stored into the Elasticsearch or NoSQL databaser for analysis. When the time passed, storing every piece of the histrical data is not very effective way, and ithose huge data could impact the analysis performance and the cost of storage.
+While monitoring the online system, there could be so many metrics' time series data will be stored into the Elasticsearch or NoSQL databaser for analysis. When the time passed, storing every piece of the histrical data is not very effective way, and those huge data could impact the analysis performance and the cost of storage.
 
 One of solution just simply delete the aged histrical data(e.g. only keep the latest 6 months data), but there is a solution we can compressing those data to small size with good resolution. 
 
-Here is a demo shows how to downsamping the time series data from 7500 points to 500 points.
+Here is a demo shows how to downsamping the time series data from 7500 points to 500 points (Actually, you can downsample it to 200 or 300 points).
 
 ## Acknowledgement
 
-- All of the algorthims are based on Sveinn Steinarsson's 2013 paper [Downsampling Time Series for Visual Representation]( 
+- All of the algorithms are based on Sveinn Steinarsson's 2013 paper [Downsampling Time Series for Visual Representation]( 
 https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf)
 
-- This implmentation refers to Ján Jakub Naništa's [implementation by Typescript](https://github.com/janjakubnanista/downsample)
+- This implementation refers to Ján Jakub Naništa's [implementation by Typescript](https://github.com/janjakubnanista/downsample)
 
-- The test data I borrow from one of python implmentation which is [here](https://github.com/devoxi/lttb-py/)
+- The test data I borrow from one of python implementation which is [here](https://github.com/devoxi/lttb-py/)
 
 
 ## Usage
@@ -65,7 +65,7 @@ You can go to the `./build/data/` directory to check the diagram and the cvs fil
 
 The diagram picture as below
 - The first black chart at the top is the raw data with 7500 points
-- The second, third, and fourth respectively are LTOB, LTTB and LTD downsampling data with 500 points
+- The second, third, and fourth respectively are LTOB, LTTB, and LTD downsampling data with 500 points
 - The last one at the bottom just put all together.
 
 ![](./data/downsampling.chart.png?raw=true)
