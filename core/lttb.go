@@ -33,6 +33,9 @@ func LTTB(data []Point, threshold int) []Point {
 	for i := 0; i < threshold-2; i++ {
 
 		bucketHigh := int(math.Floor(float64(i+2)*bucketSize)) + 1
+		if bucketHigh >= len(data)-1 {
+			bucketHigh = len(data) - 2
+		}
 
 		// Calculate point average for next bucket (containing c)
 		avgPoint := calculateAverageDataPoint(data[bucketMiddle : bucketHigh+1])
