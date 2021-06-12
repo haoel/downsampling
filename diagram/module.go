@@ -1,13 +1,13 @@
 package diagram
 
 import (
-	"downsampling"
+	"downsampling/core"
 	"image/color"
 )
 
 type Config struct {
 	Title string
 	Name  string
-	Data  []downsampling.Point
+	Data  []core.Point
 	Color color.RGBA
 }

@@ -1,4 +1,4 @@
-package downsampling
+package core
 
 // Point is a point on a line
 type Point struct {

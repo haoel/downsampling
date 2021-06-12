@@ -1,4 +1,4 @@
-package downsampling
+package core
 
 import (
 	"math"

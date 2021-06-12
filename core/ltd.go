@@ -1,4 +1,4 @@
-package downsampling
+package core
 
 import (
 	"math"
@@ -46,7 +46,7 @@ func calculateSSEForBuckets(buckets [][]Point) []float64 {
 		bucketWithAdjacentPoints := make([]Point, len(currBucket)+2)
 		bucketWithAdjacentPoints[0] = prevBucket[len(prevBucket)-1]
 		bucketWithAdjacentPoints[len(bucketWithAdjacentPoints)-1] = nextBucket[0]
-		for i:=1; i < len(currBucket); i++ {
+		for i := 1; i < len(currBucket); i++ {
 			bucketWithAdjacentPoints[i] = currBucket[i-1]
 		}
 

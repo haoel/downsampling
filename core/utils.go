@@ -1,4 +1,4 @@
-package downsampling
+package core
 
 import (
 	"math"
@@ -80,5 +80,3 @@ func peakAndTroughPointIndex(points []Point) (int, int) {
 	}
 	return maxIdx, minIdx
 }
-
-

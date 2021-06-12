@@ -45,7 +45,6 @@ You can find all of these implementation under `src/downsampling` directory.
 Following the below instruction to compile and run this repo.
 
 ```
-make vget 
 make 
 ./build/bin/main
 ```

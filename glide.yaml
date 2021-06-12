@@ -1,9 +1,0 @@
-package: .
-ignore:
-- downsampling
-import:
-- package: gonum.org/v1/plot
-  subpackages:
-  - plotter
-  - plotutil
-  - vg

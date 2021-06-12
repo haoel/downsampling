@@ -8,7 +8,7 @@ import (
 	"image/png"
 	"os"
 
-	"downsampling"
+	"downsampling/core"
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
@@ -16,7 +16,7 @@ import (
 	"gonum.org/v1/plot/vg"
 )
 
-func CovertToPlotXY(data []downsampling.Point) plotter.XYs {
+func CovertToPlotXY(data []core.Point) plotter.XYs {
 	pts := make(plotter.XYs, len(data))
 	for i := range pts {
 		pts[i].X = data[i].X
@@ -39,10 +39,8 @@ func MakeLinePlotter(d plotter.XYs, c color.RGBA, width int) (*plotter.Line, err
 }
 
 func SavePNG(title string, file string, name []string, line []*plotter.Line) error {
-	p, err := plot.New()
-	if err != nil {
-		return err
-	}
+	p := plot.New()
+
 	p.Title.Text = title
 	p.X.Label.Text = "X"
 	p.Y.Label.Text = "Y"

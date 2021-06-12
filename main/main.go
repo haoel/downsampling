@@ -7,9 +7,9 @@ import (
 	"os"
 	"runtime/pprof"
 
-	"common"
-	"diagram"
-	"downsampling"
+	"downsampling/common"
+	"downsampling/core"
+	"downsampling/diagram"
 )
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
@@ -32,23 +32,23 @@ func main() {
 		}
 
 		pprof.StartCPUProfile(f)
-		var x []downsampling.Point
+		var x []core.Point
 		for i := 0; i < 200; i++ {
-			x = downsampling.LTOB(rawdata, sampledCount)
-			x = downsampling.LTTB(rawdata, sampledCount)
-			x = downsampling.LTD(rawdata, sampledCount)
+			x = core.LTOB(rawdata, sampledCount)
+			x = core.LTTB(rawdata, sampledCount)
+			x = core.LTD(rawdata, sampledCount)
 		}
 		pprof.StopCPUProfile()
 		println("%v\n", x)
 	}
 	log.Printf("Downsampling the data from %d to %d...\n", len(rawdata), sampledCount)
-	samplesLTOB := downsampling.LTOB(rawdata, sampledCount)
+	samplesLTOB := core.LTOB(rawdata, sampledCount)
 	common.SavePointsToCSV(dataDir+"downsampling.ltob.csv", samplesLTOB)
 	log.Println("Downsampling data - LTOB algorithm done!")
-	samplesLTTB := downsampling.LTTB(rawdata, sampledCount)
+	samplesLTTB := core.LTTB(rawdata, sampledCount)
 	common.SavePointsToCSV(dataDir+"downsampling.lttb.csv", samplesLTTB)
 	log.Println("Downsampling data - LTTB algorithm done!")
-	samplesLTD := downsampling.LTD(rawdata, sampledCount)
+	samplesLTD := core.LTD(rawdata, sampledCount)
 	common.SavePointsToCSV(dataDir+"downsampling.ltd.csv", samplesLTD)
 	log.Println("Downsampling data - LTD algorithm done!")
 

@@ -8,22 +8,22 @@ import (
 	"os"
 	"strconv"
 
-	"downsampling"
+	"downsampling/core"
 )
 
-func LoadPointsFromCSV(file string) []downsampling.Point {
+func LoadPointsFromCSV(file string) []core.Point {
 	csvFile, err := os.Open(file)
 	CheckError("Cannot Open the file.", err)
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 
-	var data []downsampling.Point
+	var data []core.Point
 	for {
 		line, error := reader.Read()
 		if error == io.EOF {
 			break
 		}
 		CheckError("Read file error", err)
-		var d downsampling.Point
+		var d core.Point
 		d.X, _ = strconv.ParseFloat(line[0], 64)
 		d.Y, _ = strconv.ParseFloat(line[1], 64)
 		data = append(data, d)
@@ -31,7 +31,7 @@ func LoadPointsFromCSV(file string) []downsampling.Point {
 	return data
 }
 
-func SavePointsToCSV(file string, points []downsampling.Point) {
+func SavePointsToCSV(file string, points []core.Point) {
 	fp, err := os.Create(file)
 	CheckError("Cannot create file", err)
 	defer fp.Close()
