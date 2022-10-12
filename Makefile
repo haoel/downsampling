@@ -1,16 +1,19 @@
-.PHONY: default build clean depend vget vclean glide
+.PHONY: default build clean  prof bench run
+
+export GO111MODULE=on
 
 MKFILE_PATH := $(abspath $(lastword $(MAKEFILE_LIST)))
 MKFILE_DIR := $(dir $(MKFILE_PATH))
+DEMO_DIR := $(MKFILE_DIR)/demo
 
 
-GOBUILD := ${MKFILE_DIR}build/
-GOBIN := ${GOBUILD}bin
+GOBUILD := ${DEMO_DIR}/build
+GOBIN := ${GOBUILD}/bin
 export GOBIN
 
 
-TARGET=${MKFILE_DIR}build/bin/main
-SOURCE=${MKFILE_DIR}/main/main.go
+TARGET=${DEMO_DIR}/build/bin/main
+SOURCE=${DEMO_DIR}/main/main.go
 ALL_SOURCE=$(shell find ${MKFILE_DIR} -type f -name "*.go")
 
 default: ${TARGET}
@@ -18,14 +21,15 @@ default: ${TARGET}
 
 ${TARGET}: ${ALL_SOURCE}
 	@echo "-------------- building ---------------"
-	mkdir -p ${MKFILE_DIR}build/bin/
-	cd ${MKFILE_DIR} && go build -v -ldflags "-s -w" -o ${TARGET} ${SOURCE}
-	mkdir -p ${GOBUILD}data/ && cp ${MKFILE_DIR}data/* ${GOBUILD}data/
+	go mod tidy
+	mkdir -p ${DEMO_DIR}build/bin/
+	cd ${DEMO_DIR} && go build -v -ldflags "-s -w" -o ${TARGET} ${SOURCE}
+	mkdir -p ${GOBUILD}/data/ && cp ${DEMO_DIR}/data/* ${GOBUILD}/data/
 
 build: default
 
-clean: 
-	@rm -rf ${TARGET} &&  rm -rf ${GOBUILD}data/ && rm -rf ${GOBUILD} 
+clean:
+	@rm -rf ${TARGET} &&  rm -rf ${GOBUILD}/data/ && rm -rf ${GOBUILD}
 
 run : ${TARGET}
 	${TARGET}
@@ -36,10 +40,5 @@ prof: ${TARGET}
 
 bench:
 	go test -bench=. ./core/
-
-vget: 
-	go get ./...
-
-
 
 

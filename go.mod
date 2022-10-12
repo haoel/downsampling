@@ -1,4 +1,4 @@
-module downsampling
+module github.com/haoel/downsampling
 
 go 1.16
 

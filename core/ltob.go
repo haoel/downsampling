@@ -4,9 +4,9 @@ import (
 	"math"
 )
 
-// Largest triangle one bucket(LTOB) data downsampling algorithm implementation
-//  - Require: data . The original data
-//  - Require: threshold . Number of data points to be returned
+// LTOB - Largest triangle one bucket(LTOB) data downsampling algorithm implementation
+//   - Require: data . The original data
+//   - Require: threshold . Number of data points to be returned
 func LTOB(data []Point, threshold int) []Point {
 
 	if threshold >= len(data) || threshold == 0 {

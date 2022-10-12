@@ -122,10 +122,9 @@ func mergeBucketAt(buckets [][]Point, index int) [][]Point {
 	return newBuckets
 }
 
-// Largest triangle dynamic(LTD) data downsampling algorithm implementation
+// LTD - Largest triangle dynamic(LTD) data downsampling algorithm implementation
 //  - Require: data . The original data
 //  - Require: threshold . Number of data points to be returned
-
 func LTD(data []Point, threshold int) []Point {
 
 	if threshold >= len(data) || threshold == 0 {

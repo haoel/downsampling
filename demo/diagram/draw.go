@@ -8,7 +8,7 @@ import (
 	"image/png"
 	"os"
 
-	"downsampling/core"
+	"github.com/haoel/downsampling/core"
 
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"

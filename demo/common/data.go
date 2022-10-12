@@ -8,7 +8,7 @@ import (
 	"os"
 	"strconv"
 
-	"downsampling/core"
+	"github.com/haoel/downsampling/core"
 )
 
 func LoadPointsFromCSV(file string) []core.Point {

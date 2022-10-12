@@ -4,9 +4,9 @@ import (
 	"math"
 )
 
-// Largest triangle three buckets (LTTB) data downsampling algorithm implementation
-//  - Require: data . The original data
-//  - Require: threshold . Number of data points to be returned
+// LTTB - Largest triangle three buckets (LTTB) data downsampling algorithm implementation
+//   - Require: data . The original data
+//   - Require: threshold . Number of data points to be returned
 func LTTB(data []Point, threshold int) []Point {
 
 	if threshold >= len(data) || threshold == 0 {
@@ -72,12 +72,14 @@ func LTTB(data []Point, threshold int) []Point {
 	return sampledData
 }
 
+// LTTB2 - split the data into buckets and then apply run LTTB on each bucket
 func LTTB2(data []Point, threshold int) []Point {
 	buckets := splitDataBucket(data, threshold)
 	samples := LTTBForBuckets(buckets)
 	return samples
 }
 
+// LTTBForBuckets - apply LTTB on each bucket
 func LTTBForBuckets(buckets [][]Point) []Point {
 	bucketCount := len(buckets)
 	sampledData := make([]Point, 0)

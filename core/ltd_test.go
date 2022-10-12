@@ -4,13 +4,13 @@ import (
 	"os"
 	"testing"
 
-	"downsampling/common"
-	"downsampling/core"
+	"github.com/haoel/downsampling/core"
+	"github.com/haoel/downsampling/demo/common"
 )
 
 func BenchmarkLTD(b *testing.B) {
 	dir, _ := os.Getwd()
-	dataDir := dir + "/../data/"
+	dataDir := dir + "/../demo/data/"
 
 	const sampledCount = 500
 	rawdata := common.LoadPointsFromCSV(dataDir + "source.csv")
