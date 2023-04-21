@@ -164,8 +164,8 @@ func LTD(data []Point, threshold int) []Point {
 		}
 
 		// 5: Find the pair of adjacent buckets A and B with the lowest SSE sum .
-		lowestSSEAdajacentBucketIndex := findLowestSSEAdjacentBucketsIndex(sseForBuckets, highestSSEBucketIndex)
-		if lowestSSEAdajacentBucketIndex < 0 {
+		lowestSSEAdjacentBucketIndex := findLowestSSEAdjacentBucketsIndex(sseForBuckets, highestSSEBucketIndex)
+		if lowestSSEAdjacentBucketIndex < 0 {
 			break
 		}
 
@@ -174,10 +174,10 @@ func LTD(data []Point, threshold int) []Point {
 		buckets = splitBucketAt(buckets, highestSSEBucketIndex)
 
 		// 7: Merge the buckets A and B
-		if lowestSSEAdajacentBucketIndex > highestSSEBucketIndex {
-			lowestSSEAdajacentBucketIndex++
+		if lowestSSEAdjacentBucketIndex > highestSSEBucketIndex {
+			lowestSSEAdjacentBucketIndex++
 		}
-		buckets = mergeBucketAt(buckets, lowestSSEAdajacentBucketIndex)
+		buckets = mergeBucketAt(buckets, lowestSSEAdjacentBucketIndex)
 
 	}
 	// 10: Use the Largest-Triangle-Three-Buckets algorithm on the resulting bucket
