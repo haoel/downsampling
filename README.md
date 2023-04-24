@@ -1,6 +1,6 @@
 # Downsampling Algorithm
 
-The Golang implementation for downsampling time series data algorithm
+The Go implementation for downsampling time series data algorithm.
 
 - [Downsampling Algorithm](#downsampling-algorithm)
   - [Background](#background)
@@ -17,9 +17,9 @@ The Golang implementation for downsampling time series data algorithm
 
 While monitoring the online system, there could be so many metrics' time series data will be stored in the ElasticSearch or NoSQL database for analysis. As time passed, storing every piece of historical data is not a very effective way, and those huge data could impact the analysis performance and the cost of storage.
 
-One solution just simply deletes the aged historical data(e.g. only keep the latest 6 months' data), but there is a solution we can compressing those data to a small size with good resolution.
+One solution just simply deletes the aged historical data(e.g. only keep the latest 6 months' data), but there is a solution we can compress those data to a small size with good resolution.
 
-Here is the Go library to demonstrate how to downsamping the time series data from 7500 points to 500 points (Actually, you can downsample it to 200 or 300 points).
+Here is the Go library to demonstrate how to downsample the time series data from 7500 points to 500 points (actually, you can downsample it to 200 or 300 points).
 
 
 ## Acknowledgment
@@ -27,7 +27,7 @@ Here is the Go library to demonstrate how to downsamping the time series data fr
 - All of the algorithms are based on Sveinn Steinarsson's 2013 paper [Downsampling Time Series for Visual Representation](
 https://skemman.is/bitstream/1946/15343/3/SS_MSthesis.pdf)
 
-- This implementation refers to Ján Jakub Naništa's [implementation by Typescript](https://github.com/janjakubnanista/downsample)
+- This implementation refers to Ján Jakub Naništa's [implementation by TypeScript](https://github.com/janjakubnanista/downsample)
 
 - The test data I borrow from one of Python implementation which is [here](https://github.com/devoxi/lttb-py/)
 
@@ -59,7 +59,7 @@ make
 ./demo/build/bin/main
 ```
 
-If everything goes fine, you will see the following message
+If everything goes fine, you will see the following message:
 
 ```
 2019/09/07 18:34:42 Reading the testing data...
@@ -98,7 +98,7 @@ make bench
 
 ## Further Reading
 
-* [The Billion Data Point [Challenge](https://eng.uber.com/billion-data-point-challenge/) by the Uber Engineering team
+* [The Billion Data Point Challenge](https://eng.uber.com/billion-data-point-challenge/) by the Uber Engineering team
 * [Visualize Big Data on Mobile](http://dduraz.com/2019/04/26/data-visualization-mobile/) by dduraz
 * [Sampling large datasets in d3fc](http://blog.scottlogic.com/2015/11/16/sampling-large-data-in-d3fc.html) by William Ferguson
 * [Downsampling algorithms](http://www.adrian.idv.hk/2018-01-24-downsample/) by Adrian S. Tam
